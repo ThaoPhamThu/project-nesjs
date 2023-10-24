@@ -3,7 +3,7 @@ import { CreatePermissionDto } from './dto/create-permission.dto';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
-import { Permisstion, PermisstionDocument } from './schemas/permission.schema';
+import { Permission, PermissionDocument } from './schemas/permission.schema';
 import { IUser } from 'src/users/user.interface';
 import { User } from 'src/decorator/customize';
 import { async } from 'rxjs';
@@ -12,17 +12,17 @@ import mongoose from 'mongoose';
 
 @Injectable()
 export class PermissionsService {
-  constructor(@InjectModel(Permisstion.name) private permisstionModel: SoftDeleteModel<PermisstionDocument>) { }
+  constructor(@InjectModel(Permission.name) private permissionModel: SoftDeleteModel<PermissionDocument>) { }
 
   async create(createPermissionDto: CreatePermissionDto, @User() user: IUser) {
     const { name, apiPath, method, module } = createPermissionDto;
 
-    const isExist = await this.permisstionModel.findOne({ apiPath, method });
+    const isExist = await this.permissionModel.findOne({ apiPath, method });
     if (isExist) {
       throw new BadRequestException('Permisstion với apiPath=${Path}, method=${method}')
     }
 
-    return await this.permisstionModel.create({
+    return await this.permissionModel.create({
       name, apiPath, method, module,
       createdBy: {
         _id: user._id,
@@ -38,10 +38,10 @@ export class PermissionsService {
 
     const skip = (+currentPage - 1) * (+limit);
     const defaultlimit = (+limit) ? (+limit) : 10;
-    const totalItems = (await this.permisstionModel.find(filter)).length;
+    const totalItems = (await this.permissionModel.find(filter)).length;
     const totalPage = Math.ceil(totalItems / defaultlimit);
 
-    const results = await this.permisstionModel.find(filter)
+    const results = await this.permissionModel.find(filter)
       .sort(sort as any)
       .skip(skip)
       .limit(defaultlimit)
@@ -65,7 +65,7 @@ export class PermissionsService {
       throw new BadRequestException('Not found permission')
     }
 
-    return await this.permisstionModel.findOne({ _id: id });
+    return await this.permissionModel.findOne({ _id: id });
   }
 
   async update(id: string, updatePermissionDto: UpdatePermissionDto, @User() user: IUser) {
@@ -74,7 +74,7 @@ export class PermissionsService {
     }
 
     const { module, method, apiPath, name } = updatePermissionDto;
-    return await this.permisstionModel.updateOne({ _id: id },
+    return await this.permissionModel.updateOne({ _id: id },
       {
         module, method, apiPath, name,
         updatedBy: {
@@ -89,7 +89,7 @@ export class PermissionsService {
       throw new BadRequestException('Not found permission')
     }
 
-    const deleteUpdate = await this.permisstionModel.updateOne({ _id: id },
+    const deleteUpdate = await this.permissionModel.updateOne({ _id: id },
       {
         deletedBy: {
           _id: user._id,
@@ -97,6 +97,6 @@ export class PermissionsService {
         }
       })
 
-    return await this.permisstionModel.softDelete({ _id: id })
+    return await this.permissionModel.softDelete({ _id: id })
   }
 }

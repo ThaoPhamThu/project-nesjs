@@ -50,7 +50,7 @@ export class ResumesService {
     let totalItems = ((await this.resumeModel.find(filter)).length);
     let totalPage = Math.ceil(totalItems / defaultlimit);
 
-    const results = await this.resumeModel.find(filter)
+    const result = await this.resumeModel.find(filter)
       .skip(skip)
       .limit(defaultlimit)
       .sort(sort as any)
@@ -65,7 +65,7 @@ export class ResumesService {
         pages: totalPage,
         total: totalItems
       },
-      results
+      result
     }
   }
 

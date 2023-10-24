@@ -70,7 +70,7 @@ export class UsersService {
     const totalItems = (await this.userModel.find(filter)).length;
     const totalPage = Math.ceil(totalItems / defaultlimit);
 
-    const results = await this.userModel.find(filter)
+    const result = await this.userModel.find(filter)
       .skip(skip)
       .limit(defaultlimit)
       .sort(sort as any)
@@ -85,7 +85,7 @@ export class UsersService {
         pages: totalPage,
         total: totalItems
       },
-      results
+      result
     }
 
   }
@@ -103,7 +103,7 @@ export class UsersService {
 
   findOneByUsername(username: string) {
     return this.userModel.findOne({ email: username })
-      .populate({ path: 'role', select: { name: 1, permisstions: 1 } });
+      .populate({ path: 'role', select: { name: 1, permissions: 1 } });
   }
 
   isValidPassword(password: string, hash: string) {

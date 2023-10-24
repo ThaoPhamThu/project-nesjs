@@ -15,7 +15,7 @@ export class RolesService {
   constructor(@InjectModel(Role.name) private roleModel: SoftDeleteModel<RoleDocument>) { }
 
   async create(createRoleDto: CreateRoleDto, @User() user: IUser) {
-    const { name, description, isActive, permisstions } = createRoleDto;
+    const { name, description, isActive, permissions } = createRoleDto;
 
     const isExist = await this.roleModel.findOne({ name: name });
     if (isExist) {
@@ -23,7 +23,7 @@ export class RolesService {
     }
 
     const newRole = await this.roleModel.create({
-      name, description, isActive, permisstions,
+      name, description, isActive, permissions,
       createdBy: {
         _id: user._id,
         email: user.email
@@ -35,17 +35,17 @@ export class RolesService {
     };
   }
 
-  async findAll(curentPage: number, limit: number, qs: string) {
+  async findAll(currentPage: number, limit: number, qs: string) {
     const { filter, sort, population, projection } = aqp(qs);
     delete filter.current;
     delete filter.pageSize;
 
-    const skip = (+curentPage - 1) * (+limit);
+    const skip = (+currentPage - 1) * (+limit);
     const defaultlimit = +limit ? +limit : 10;
     const totalItems = (await this.roleModel.find(filter)).length;
     const totalPages = Math.ceil(totalItems / defaultlimit);
 
-    const results = await this.roleModel.find(filter)
+    const result = await this.roleModel.find(filter)
       .skip(skip)
       .limit(limit)
       .sort(sort as any)
@@ -55,12 +55,12 @@ export class RolesService {
 
     return {
       meta: {
-        current: curentPage,
+        current: currentPage,
         pageSize: limit,
         pages: totalPages,
         total: totalItems
       },
-      results
+      result
     }
   }
 
@@ -70,7 +70,7 @@ export class RolesService {
     }
 
     return await this.roleModel.findOne({ _id: id })
-      .populate({ path: 'permisstions', select: { _id: 1, apiPath: 1, name: 1, method: 1, module: 1 } });
+      .populate({ path: 'permissions', select: { _id: 1, apiPath: 1, name: 1, method: 1, module: 1 } });
   }
 
   async update(id: string, updateRoleDto: UpdateRoleDto, @User() user: IUser) {
@@ -78,10 +78,10 @@ export class RolesService {
       throw new BadRequestException('not found resumes')
     }
 
-    const { name, description, isActive, permisstions } = updateRoleDto;
+    const { name, description, isActive, permissions } = updateRoleDto;
 
     return await this.roleModel.updateOne({ _id: id }, {
-      name, description, isActive, permisstions,
+      name, description, isActive, permissions,
       updatedBy: {
         _id: user._id,
         email: user.email

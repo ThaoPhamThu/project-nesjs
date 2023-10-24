@@ -10,7 +10,7 @@ import { use } from 'passport';
 export class PermissionsController {
   constructor(private readonly permissionsService: PermissionsService) { }
 
-  @ResponseMessage('Create a new permisstion')
+  @ResponseMessage('Create a new permission')
   @Post()
   async create(@Body() createPermissionDto: CreatePermissionDto, @User() user: IUser) {
     const permission = await this.permissionsService.create(createPermissionDto, user);
@@ -32,7 +32,7 @@ export class PermissionsController {
     return this.permissionsService.findOne(id);
   }
 
-  @ResponseMessage('Update a permisstion')
+  @ResponseMessage('Update a permission')
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePermissionDto: UpdatePermissionDto, @User() user: IUser) {
     return this.permissionsService.update(id, updatePermissionDto, user);

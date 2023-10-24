@@ -13,10 +13,10 @@ export class CreateRoleDto {
     @IsNotEmpty({ message: 'isActive k duoc de trong' })
     isActive: boolean;
 
-    @IsMongoId({ each: true, message: 'each permisstion là mong ObjectId' })
-    @IsArray({ message: 'permisstions có định dạng là array' })
-    @IsNotEmpty({ message: 'permisstions k duoc de trong' })
-    permisstions: mongoose.Schema.Types.ObjectId[];
+    @IsMongoId({ each: true, message: 'each permission là mong ObjectId' })
+    @IsArray({ message: 'permissions có định dạng là array' })
+    @IsNotEmpty({ message: 'permissions k duoc de trong' })
+    permissions: mongoose.Schema.Types.ObjectId[];
 
 }
 

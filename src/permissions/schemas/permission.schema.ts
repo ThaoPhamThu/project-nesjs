@@ -1,10 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
 
-export type PermisstionDocument = HydratedDocument<Permisstion>;
+export type PermissionDocument = HydratedDocument<Permission>;
 
 @Schema({ timestamps: true })
-export class Permisstion {
+export class Permission {
     @Prop()
     name: string;
 
@@ -49,4 +49,4 @@ export class Permisstion {
 
 }
 
-export const PermisstionSchema = SchemaFactory.createForClass(Permisstion);
+export const PermissionSchema = SchemaFactory.createForClass(Permission);

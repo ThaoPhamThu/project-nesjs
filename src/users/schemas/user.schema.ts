@@ -26,7 +26,7 @@ export class User {
     address: string;
 
     @Prop({ type: Object })
-    conpany: {
+    company: {
         _id: mongoose.Schema.Types.ObjectId,
         name: string
     };

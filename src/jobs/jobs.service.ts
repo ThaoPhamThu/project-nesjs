@@ -46,7 +46,7 @@ export class JobsService {
     const totalItems = ((await this.jobModel.find(filter)).length);
     const totalPage = Math.ceil(totalItems / defaultlimit);
 
-    const results = await this.jobModel.find(filter)
+    const result = await this.jobModel.find(filter)
       .skip(skip)
       .limit(limit)
       .sort(sort as any)
@@ -60,7 +60,7 @@ export class JobsService {
         pages: totalPage,
         total: totalItems
       },
-      results
+      result
     }
 
   }
