@@ -41,7 +41,7 @@ export class PermissionsService {
     const totalItems = (await this.permissionModel.find(filter)).length;
     const totalPage = Math.ceil(totalItems / defaultlimit);
 
-    const results = await this.permissionModel.find(filter)
+    const result = await this.permissionModel.find(filter)
       .sort(sort as any)
       .skip(skip)
       .limit(defaultlimit)
@@ -56,7 +56,7 @@ export class PermissionsService {
         pages: totalPage,
         total: totalItems
       },
-      results
+      result
     }
   }
 

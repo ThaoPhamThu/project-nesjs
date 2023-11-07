@@ -9,6 +9,7 @@ import { User } from 'src/decorator/customize';
 import { IUser } from 'src/users/user.interface';
 import mongoose from 'mongoose';
 import aqp from 'api-query-params';
+import { ADMIN_ROLE } from 'src/databases/sample';
 
 @Injectable()
 export class RolesService {
@@ -95,7 +96,7 @@ export class RolesService {
     }
 
     const foundRole = await this.roleModel.findById(id);
-    if (foundRole.name === 'ADMIN') {
+    if (foundRole.name === ADMIN_ROLE) {
       throw new BadRequestException('không thể xóa role ADMIN')
     }
 
